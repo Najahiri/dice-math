@@ -1,0 +1,273 @@
+% Preamble-------------------------------------------------------------------- %
+\documentclass[a4paper,oneside,11pt]{book}
+
+% Package List---------------------------------------------------------------- %
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{bm}
+% \usepackage{mathrsfs}			% Per usare \mathscr{•}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks	=	true,				% Colours links instead of ugly boxes
+	urlcolor		=	blue,				% Colour for external hyperlinks
+	linkcolor		=	blue,				% Colour of internal links
+	citecolor		=	blue				% Colour of citations
+}
+% \usepackage{refcheck}			% Visualizza i nomi delle equazioni affianco alle stesse. Denota in maniera diversa equazioni che siano poi state richiamate.
+
+% Text Setting---------------------------------------------------------------- %
+\frenchspacing							% Makes the sentence spacing single spaced
+\parskip=9pt								% Set the space after a paragraph equal to 9pt
+
+% My Definitions-------------------------------------------------------------- %
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\divr}{div}
+\newcommand{\xv}{{\mathbf{x}}}
+\newcommand{\yv}{{\mathbf{y}}}
+\newcommand{\zv}{{\mathbf{z}}}
+\newcommand{\pv}{{\mathbf{p}}}
+\newcommand{\qv}{{\mathbf{q}}}
+\newcommand{\rv}{{\mathbf{r}}}
+\newcommand{\sv}{{\mathbf{s}}}
+\newcommand{\kv}{{\mathbf{k}}}
+\newcommand{\zer}{{\bm{0}}}
+\newcommand{\bigO}[1]{\mathcal O\left(#1\right)}
+\newcommand{\smlo}[1]{o\left(#1\right)}
+\DeclareMathOperator{\supp}{supp}
+\renewcommand{\Re}{\mathrm{Re}}
+\renewcommand{\Im}{\mathrm{Im}}
+\renewcommand{\Pr}{\mathbb{P}}
+
+%% MAIN TEXT
+
+\begin{document}
+\chapter{The computation of my life}
+\section{A very special Rolling}
+We want to say something about dice rolling. Consider the roll of a $N$-sided dice that we roll {\bfseries with explosion}. This means that on a roll of $N$, we roll again and add the result to the previous roll. This differ from a standard roll from the fact that the potential result is theoretically unbounded (although the probability decreases as the result increases). We denote this roll as $dN^*$.
+
+If we then look at the probability of rolling $n$ on such a dice, we get
+\begin{align}
+	\Pr_N(n)&=\Pr\left(\mbox{a roll of }dN^*\mbox{ gives }n\right)=
+\\
+	&=\left\{\begin{array}{cl}
+		0						& \mbox{if } n \mbox{ is a multiple of }6	\\
+		\frac1N 		& \mbox{if } 1\le n\le N-1	\\
+		\frac1{N^2} & \mbox{if } N+1\le n<2N-1	\\
+		\vdots			&	\\
+		\frac1{N^{k+1}} & \mbox{if } kN+1\le n<\left(k+1\right)N-1	\\
+		\vdots
+	\end{array}\right.
+\\
+	&=\sum_{k=0}^{+\infty}\frac1{N^{k+1}}\chi_{[kN+1,\left(k+1\right)N-1]}(n).
+\end{align}
+
+We want to understand what is the expected value as well as the variance for $\Pr_N$. To do that we need to remind ourselves of other computations.
+
+\subsection{Geometric series}
+Consider a real number $\left|x\right|<1$, and the following sum:
+\begin{equation}
+	S_R(x)=1+x+x^2+\ldots+x^R.
+\end{equation}
+
+If $x\neq1$ (ensured by the fact that $\left|x\right|<1$), we have that
+\begin{equation}
+	S_R(x)=\frac{1-x^R}{1-x}.
+\end{equation}
+
+Using that $\left|x\right|<1$, this means that as $R$ grows, $\left|x\right|^R$ goes to zero. So, if we perform the limit to $R$ to infinity we get
+\begin{align}
+	\sum_{\ell=0}^{+\infty}x^\ell
+	&=\lim_{R\to+\infty}S_R\left(x\right)
+	=\lim_{R\to+\infty}\frac{1-x^R}{1-x}
+	=\frac1{1-x}.
+\end{align}
+
+We want to apply this to $X:=x^{-1}$. In this case the condition becomes $\left|X\right|>1$, and in this case we get the formula:
+\begin{align}
+\label{eqn:geometric0}
+	\sum_{\ell=0}^{+\infty}\frac1{X^\ell}
+	&=\frac X{X-1}.
+\end{align}
+
+We can also consider the sum starting from $1$ and get
+\begin{align}
+\label{eqn:geometric1}
+	\sum_{\ell=1}^{+\infty}\frac1{X^\ell}
+	&=\frac1{X-1}.
+\end{align}
+
+\subsection{First and second moments of the geometric series}
+To compute the first two moments of the geometric series \eqref{eqn:geometric1}, we differentiate respect to $X$ both sides. Differentiating the left side we get
+\begin{align}
+	\partial_X\left(\sum_{\ell=1}^{+\infty}\frac1{X^\ell}\right)
+	&=\sum_{\ell=1}^{+\infty}\frac{-\ell}{X^{\ell+1}}
+	=-\sum_{\ell=2}^{+\infty}\frac{\ell-1}{X^\ell}
+	=-\sum_{\ell=1}^{+\infty}\frac{\ell-1}{X^\ell}
+\\
+	&=-\sum_{\ell=1}^{+\infty}\frac{\ell}{X^\ell}
+	+\sum_{\ell=1}^{+\infty}\frac1{X^\ell}
+	=-\sum_{\ell=1}^{+\infty}\frac{\ell}{X^\ell}
+	+\frac1{X-1}.
+\end{align}
+
+We substitute now the definition in \eqref{eqn:geometric1} to get
+\begin{align}
+	\sum_{\ell=1}^{+\infty}\frac{\ell}{X^\ell}
+	&=-\partial_X\left(\frac1{X-1}\right)
+	+\frac1{X-1}
+\\
+\label{eqn:geometric:firstmoment}
+	&=\frac1{\left(X-1\right)^2}
+	+\frac1{X-1}
+	=\frac X{\left(X-1\right)^2}
+\end{align}
+
+If we differentiate again, the left term of \eqref{eqn:geometric:firstmoment} gives us
+\begin{align}
+	\partial_X\left(\sum_{\ell=1}^{+\infty}\frac{\ell}{X^\ell}\right)
+	&=\sum_{\ell=1}^{+\infty}\frac{-\ell^2}{X^{\ell+1}}
+	=-\sum_{\ell=2}^{+\infty}\frac{\left(\ell-1\right)^2}{X^\ell}
+	=-\sum_{\ell=1}^{+\infty}\frac{\left(\ell-1\right)^2}{X^\ell}
+\\
+	&=-\sum_{\ell=1}^{+\infty}\frac{\ell^2}{X^\ell}
+	+2\sum_{\ell=1}^{+\infty}\frac\ell{X^\ell}
+	-\sum_{\ell=1}^{+\infty}\frac1{X^\ell}
+\\
+	&=-\sum_{\ell=1}^{+\infty}\frac{\ell^2}{X^\ell}
+	+2\left(
+		\frac1{\left(X-1\right)^2}
+		+\frac1{X-1}
+	\right)
+	-\frac1{X-1}
+\\
+	&=-\sum_{\ell=1}^{+\infty}\frac{\ell^2}{X^\ell}
+	+\frac2{\left(X-1\right)^2}
+	+\frac1{X-1}
+\end{align}
+
+As a consequence, the second to last term in \eqref{eqn:geometric:firstmoment} we get
+\begin{align}
+	\sum_{\ell=1}^{+\infty}\frac{\ell^2}{X^\ell}
+	&=-\partial_X\left(
+		\frac1{\left(X-1\right)^2}
+		+\frac1{X-1}
+	\right)
+	+\frac2{\left(X-1\right)^2}
+	+\frac1{X-1}
+\\
+	&=-\left(
+		-\frac2{\left(X-1\right)^3}
+		-\frac1{\left(X-1\right)^2}
+	\right)
+	+\frac2{\left(X-1\right)^2}
+	+\frac1{X-1}
+\\
+	&=\frac2{\left(X-1\right)^3}
+	+\frac3{\left(X-1\right)^2}
+	+\frac1{X-1}
+	=\frac{X\left(X+1\right)}{\left(X-1\right)^3}.
+\end{align}
+
+\subsection{Finite sums}
+One can easily find also that the following two finite sums are true (which will be useful later):
+\begin{gather}
+\label{eqn:sums:ones}
+	\sum_{\ell=1}^{R}1=R,
+\\
+\label{eqn:sums:elements}
+	\sum_{\ell=1}^{R}\ell=\frac{R\left(R+1\right)}{2},
+\\
+\label{eqn:sums:squares}
+	\sum_{\ell=1}^{R}\ell^2=\frac{R\left(R+1\right)\left(2R+1\right)}{6}.
+\end{gather}
+
+\section{Expected value}
+To calculate the expected value, we proceed with an explicit calculation:
+\begin{align}
+	\mathbb{E}_N&=\sum_{n=1}^{+\infty}n\Pr_N\left(n\right)
+	=\sum_{n=1}^{+\infty}\sum_{k=0}^{+\infty}\frac n{N^{k+1}}\chi_{[kN+1,\left(k+1\right)N-1]}(n)
+\\
+	&=\sum_{m=0}^{+\infty}\sum_{j=1}^{N-1}\sum_{k=0}^{+\infty}\frac{mN+j}{N^{k+1}}\chi_{[kN+1,\left(k+1\right)N-1]}\left(mN+j\right).
+\end{align}
+
+Given that $j$ is between $1$ and $N-1$, $\chi_{[kN+1,\left(k+1\right)N-1]}\left(mN+j\right)$ is $0$ if and only if $m=k$, otherwise is $1$. As a consequence we get:
+\begin{align}
+	\mathbb{E}_N&=\sum_{j=1}^{N-1}\sum_{k=0}^{+\infty}\frac{kN+j}{N^{k+1}}
+	=\sum_{j=1}^{N-1}
+	\left(
+		\sum_{k=0}^{+\infty}\frac{kN}{N^{k+1}}
+		+\sum_{k=0}^{+\infty}\frac{j}{N^{k+1}}
+	\right)
+\\
+	&=\sum_{j=1}^{N-1}
+	\left(
+		\sum_{k=1}^{+\infty}\frac{k}{N^{k}}
+		+j\sum_{k=1}^{+\infty}\frac1{N^k}
+	\right)
+	=\sum_{j=1}^{N-1}
+	\left(
+		\frac N{\left(N-1\right)^2}
+		+\frac j{N-1}
+	\right)
+\\
+	&=\frac N{N-1}
+	+\frac N2
+	=\frac{N\left(N+1\right)}{2\left(N-1\right)}.
+\end{align}
+
+For example, we get that the expected value for an exploding $d6^*$ is $21/5=4,2$, slightly more than the one of a normal $d6$ (which is $3,5$).
+
+\section{A very special Die}
+Consider now this configuration: we roll a $d6$; if it rolls more than $3$, it counts as a $0$, if it rolls a $3$, we roll again and add the new result to the value of the dice, potentially rolling again or summing a $0$. This new probability is as follows:
+\begin{align}
+	\Pr_N^0\left(n\right)
+	&=\left\{\begin{array}{cl}
+		\frac12 							& \mbox{if } n=0	\\
+		\frac16 							& \mbox{if } n=1,2	\\
+		\frac1{12} 						& \mbox{if } n=3	\\
+		\frac1{36} 						& \mbox{if } n=4,5	\\
+		\vdots								&	\\
+		\frac1{2\times6^{k}} 	& \mbox{if } n=3k	\\
+		\frac1{6^{k+1}} 			& \mbox{if } n=3k+1,3k+2	\\
+		\vdots
+	\end{array}\right.
+\\
+	&=\frac12\sum_{k=0}^{+\infty}\frac1{6^k}\chi_{3k}(n)
+	+\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+	\left[
+		\chi_{3k+1}(n)
+		+\chi_{3k+2}(n)
+	\right].
+\end{align}
+
+We can now compute the expected value and we get
+\begin{align}
+	\mathbb{E}_N^0
+	&=\sum_{n=0}^{+\infty}n\left[
+		\frac12\sum_{k=0}^{+\infty}\frac1{6^k}\chi_{3k}(n)
+		+\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+		\left[
+			\chi_{3k+1}(n)
+			+\chi_{3k+2}(n)
+		\right]
+	\right]
+\\
+	&=\frac12\sum_{k=0}^{+\infty}\frac{3k}{6^k}
+	+\sum_{k=0}^{+\infty}\frac{6k+3}{6^{k+1}}
+	=\frac32\sum_{k=0}^{+\infty}\frac{k}{6^k}
+	+\sum_{k=0}^{+\infty}\frac{k}{6^{k}}
+	+3\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+\\
+	&=\frac52\sum_{k=1}^{+\infty}\frac{k}{6^k}
+	+3\sum_{k=1}^{+\infty}\frac1{6^k}
+	=\frac52\times\frac6{25}
+	+3\times\frac15=\frac65.
+\end{align}
+
+
+\end{document}
