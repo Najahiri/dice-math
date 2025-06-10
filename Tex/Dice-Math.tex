@@ -46,6 +46,7 @@
 %% MAIN TEXT
 
 \begin{document}
+\tableofcontents
 \chapter{The computation of my life}
 \section{A very special Rolling}
 We want to say something about dice rolling. Consider the roll of a $N$-sided dice that we roll {\bfseries with explosion}. This means that on a roll of $N$, we roll again and add the result to the previous roll. This differ from a standard roll from the fact that the potential result is theoretically unbounded (although the probability decreases as the result increases). We denote this roll as $dN^*$.
@@ -221,6 +222,85 @@ Given that $j$ is between $1$ and $N-1$, $\chi_{[kN+1,\left(k+1\right)N-1]}\left
 \end{align}
 
 For example, we get that the expected value for an exploding $d6^*$ is $21/5=4,2$, slightly more than the one of a normal $d6$ (which is $3,5$).
+
+We now look at the dispersion, computed through the variance:
+\begin{align}
+  \sigma_N&=
+  \sum_{n=1}^{+\infty}
+  \left(n-\mathbb E_N\right)^2\Pr_N\left(n\right)
+  =\sum_{n=1}^{+\infty}
+  n^2\Pr_N\left(n\right)
+  -\mathbb E_N
+\\
+  &=\sum_{j=1}^{N-1}
+  \sum_{k=0}^{+\infty}
+  \frac{\left(kN+j\right)^2}{N^{k+1}}
+  -\mathbb E_N
+\\
+  &=\sum_{j=1}^{N-1}
+  \left(
+    \sum_{k=1}^{+\infty}
+    \frac{k^2}{N^{k-1}}
+    +2j\sum_{k=1}^{+\infty}
+    \frac k{N^{k}}
+    +j^2\sum_{k=0}^{+\infty}
+    \frac1{N^{k+1}}
+  \right)
+  -\mathbb E_N
+\\
+  &=\sum_{j=1}^{N-1}
+  \left(
+    \sum_{k=0}^{+\infty}
+    \frac{\left(k+1\right)^2}{N^k}
+    +2j\left(
+      \frac1{N-1}
+      +\frac1{\left(N-1\right)^2}
+    \right)
+    +j^2\sum_{k=1}^{+\infty}
+    \frac1{N^k}
+  \right)
+\\
+  &\qquad
+  -\mathbb E_N
+\\
+  &=\sum_{j=1}^{N-1}
+  \bigg(
+    \sum_{k=1}^{+\infty}
+    \frac{k^2}{N^k}
+    +2\sum_{k=1}^{+\infty}
+    \frac k{N^k}
+    +\sum_{k=0}^{+\infty}
+    \frac1{N^k}
+\\
+  &\qquad+2j\left(
+      \frac1{N-1}
+      +\frac1{\left(N-1\right)^2}
+    \right)
+    +j^2\sum_{k=1}^{+\infty}
+    \frac1{N^k}
+  \bigg)
+  -\mathbb E_N
+\\
+  &=\sum_{j=1}^{N-1}
+  \bigg(
+    \frac{N\left(N+1\right)}{\left(N-1\right)^3}
+    +2\frac N{\left(N-1\right)^2}
+    +\frac N{N-1}
+\\
+  &\qquad+2j\left(
+      \frac1{N-1}
+      +\frac1{\left(N-1\right)^2}
+    \right)
+    +\frac{j^2}{N-1}
+  \bigg)
+  -\mathbb E_N
+\\
+  &=\frac{2N\left(N+1\right)}{\left(N-1\right)^2}
+  +\frac{N^2}{N-1}
+  +\frac{N\left(2N-1\right)}6
+  -\mathbb E_N
+\end{align}
+
 
 \section{A very special Die}
 Consider now this configuration: we roll a $d6$; if it rolls more than $3$, it counts as a $0$, if it rolls a $3$, we roll again and add the new result to the value of the dice, potentially rolling again or summing a $0$. This new probability is as follows:
