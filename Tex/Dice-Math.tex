@@ -349,5 +349,61 @@ We can now compute the expected value and we get
 	+3\times\frac15=\frac65.
 \end{align}
 
+We then look at the variance of this variable
+\begin{align}
+	\left(\sigma_N^0\right)^2
+	=&\sum_{n=0}^{+\infty}
+	\left(n-\mathbb E_N^0\right)^2\Pr_N^0\left(n\right)
+	=\sum_{n=0}^{+\infty}
+	n^2\Pr_N^0\left(n\right)
+	-\mathbb E_N^0.
+\end{align}
+
+We first compute the second moment to get
+\begin{align}
+	\sum_{n=0}^{+\infty}
+	n^2\Pr_N^0\left(n\right)
+	&=\sum_{n=0}^{+\infty}n^2
+	\frac12\sum_{k=0}^{+\infty}\frac1{6^k}\chi_{3k}(n)
+\\
+	&\qquad+\sum_{n=0}^{+\infty}n^2
+	\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+	\left[
+		\chi_{3k+1}(n)
+		+\chi_{3k+2}(n)
+	\right]
+\\
+	&=\frac12\sum_{k=0}^{+\infty}\frac{9k^2}{6^k}
+	+\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+	\left[
+		\left(3k+1\right)^2
+		+\left(3k+2\right)^2
+	\right]
+\\
+	&=\frac92\sum_{k=1}^{+\infty}\frac{ k^2}{6^k}
+	+\sum_{k=0}^{+\infty}\frac1{6^{k+1}}
+	\left(
+		18k^2
+		+9k
+		+5
+	\right)
+\\
+	&=\frac92\sum_{k=1}^{+\infty}\frac{ k^2}{6^k}
+	+3\sum_{k=1}^{+\infty}\frac{k^2}{6^k}
+	+\frac32\sum_{k=1}^{+\infty}\frac k{6^k}
+	+\sum_{k=1}^{+\infty}\frac5{6^k}
+\\
+	&=\frac{15}2\times\frac{6\times7}{5^3}
+	+\frac32\times\frac{6}{5^2}
+	+5\times\frac15
+	=\frac{97}{25}
+\end{align}
+
+So, we get
+\begin{align}
+	\sigma_N^0
+	&=\sqrt{\frac{97}{25}-\frac{6}{5}}
+	=\frac{\sqrt{67}}5
+ \end{align}
 
 \end{document}
